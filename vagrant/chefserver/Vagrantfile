@@ -5,10 +5,11 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.omnibus.chef_version = "11.4.0"
   config.vm.box = "ubuntu_server_12.04_amd64"
   config.vm.box_url = "http://goo.gl/8kWkm"
 
-  config.vm.provider :chefserver01 do |cs01|
+  config.vm.define :chefserver01 do |cs01|
     cs01.vm.network :private_network, ip: "192.168.10.50"
 
     cs01.vm.provision :chef_solo do |chef|
