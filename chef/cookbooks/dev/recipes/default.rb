@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: git
+# Cookbook Name:: dev
 # Recipe:: default
 #
 # Copyright 2013, foostan
@@ -24,6 +24,6 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-package 'git' do
-  action :install
-end
+include_recipe 'dev::apt'
+include_recipe 'dev::packages'
+include_recipe 'dev::dotfiles'

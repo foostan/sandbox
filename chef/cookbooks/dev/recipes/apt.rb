@@ -1,6 +1,6 @@
 #
-# Cookbook Name:: git
-# Recipe:: default
+# Cookbook Name:: dev
+# Recipe:: apt
 #
 # Copyright 2013, foostan
 #
@@ -24,6 +24,5 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-package 'git' do
-  action :install
-end
+execute 'sudo apt-get -y --force-yes update'
+execute 'sudo apt-get -y --force-yes autoremove'

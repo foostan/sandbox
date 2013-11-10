@@ -1,6 +1,6 @@
 #
-# Cookbook Name:: git
-# Recipe:: default
+# Cookbook Name:: dev
+# Recipe:: dotfiles
 #
 # Copyright 2013, foostan
 #
@@ -24,6 +24,25 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-package 'git' do
-  action :install
+git "/home/#{node['user']}/dotfiles" do
+  repository 'https://github.com/foostan/dotfiles.git'
+  revision   'master'
+  action     :sync
+  user       node['user']
+  group      node['group']
+  #notifies :run, 'execute[ini-dotfiles]', :immediately
 end
+
+execute 'ini-dotfiles' do
+  command './ini.sh'
+  cwd     "/home/#{node['user']}/dotfiles"
+  action  :run
+  user    node['user']
+  environment ({'HOME' => "/home/#{node['user']}"})
+end
+
+execute "chsh-to-zsh" do
+  command "chsh #{node['user']} -s /bin/zsh"
+  action :run
+end
+
