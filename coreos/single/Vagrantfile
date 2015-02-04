@@ -1,0 +1,23 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+IP_BASE = "192.168.33"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.box = "yungsang/coreos-beta"
+
+  hostname = "host1"
+  ip = "#{IP_BASE}.11"
+
+  config.vm.define vm_name = hostname do |host|
+    host.vm.hostname = hostname
+    host.vm.network :private_network, ip: ip
+
+    # docker pull
+    host.vm.provision :docker, preserve_order: true do |d|
+      d.pull_images "ubuntu:trusty"
+    end
+  end
+end
