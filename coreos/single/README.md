@@ -141,3 +141,37 @@ core@host1 ~ $ docker exec -i 882 ip a
 ```
 
 ## Connect a container to container by --link
+Use `--link` option, register `TINYWEB_HOST`, `TINYWEB_PORT` and more to env.
+And register `172.17.0.5	tinyweb` to `/etc/hosts`.
+```
+core@host1 ~ $ docker run -d --name tinyweb foostan/tinyweb
+a7368f3958b501eec3373b600fa0c12341c038afbb5b83c41274f2d40c34ec3d
+
+core@host1 ~ $ docker run --rm -i -t --link tinyweb:tinyweb ubuntu /bin/bash
+root@8e407ae5a350:/# env | grep TINYWEB
+TINYWEB_PORT_80_TCP_PORT=80
+TINYWEB_PORT_80_TCP_PROTO=tcp
+TINYWEB_NAME=/kickass_thompson/tinyweb
+TINYWEB_PORT=tcp://172.17.0.5:80
+TINYWEB_PORT_80_TCP=tcp://172.17.0.5:80
+TINYWEB_PORT_80_TCP_ADDR=172.17.0.5
+root@8e407ae5a350:/# cat /etc/hosts
+172.17.0.16	8e407ae5a350
+127.0.0.1	localhost
+::1	localhost ip6-localhost ip6-loopback
+fe00::0	ip6-localnet
+ff00::0	ip6-mcastprefix
+ff02::1	ip6-allnodes
+ff02::2	ip6-allrouters
+172.17.0.5	tinyweb
+root@8e407ae5a350:/# ping tinyweb
+PING tinyweb (172.17.0.5) 56(84) bytes of data.
+64 bytes from tinyweb (172.17.0.5): icmp_seq=1 ttl=64 time=0.071 ms
+64 bytes from tinyweb (172.17.0.5): icmp_seq=2 ttl=64 time=0.071 ms
+^C
+--- tinyweb ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1002ms
+rtt min/avg/max/mdev = 0.071/0.071/0.071/0.000 ms
+root@8e407ae5a350:/# exit
+exit
+```
