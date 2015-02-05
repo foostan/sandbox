@@ -1,4 +1,4 @@
-# Sandbox of [flannel](https://github.com/coreos/flannel) on [CoreOS](https://github.com/coreos)
+# Sandbox of [CoreOS](https://github.com/coreos)
 
 ## Setup Virtual Machines
 ```
