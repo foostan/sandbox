@@ -1,0 +1,37 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+IP_BASE = "192.168.33"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.box = "AntonioMeireles/coreos-alpha"
+
+  ip = "#{IP_BASE}.11"
+
+  hostname = "rkt"
+
+  config.vm.define vm_name = hostname do |host|
+    host.vm.hostname = hostname
+    host.vm.network :private_network, ip: ip
+
+    # install rocket
+    host.vm.provision :shell do |sh|
+      sh.inline = <<-EOT
+        if [ ! -e rocket-v0.3.2.tar.gz ]; then
+          wget https://github.com/coreos/rocket/releases/download/v0.3.2/rocket-v0.3.2.tar.gz
+          tar xzvf rocket-v0.3.2.tar.gz
+        fi
+
+        if [ ! -e /opt/bin ]; then
+          mkdir /opt/bin -p
+        fi
+
+        if [ ! -e /opt/bin/rkt ]; then
+          cp rocket-v0.3.2/rkt /opt/bin
+        fi
+      EOT
+    end
+  end
+end
